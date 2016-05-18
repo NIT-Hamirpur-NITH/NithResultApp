@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="@dimen/cardview_default_elevation"
+    android:orientation="vertical"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginBottom="4dp"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold"
+            android:id="@+id/sem_sem"
+            android:textColor="@android:color/background_dark"
+            tools:text="Sem1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="8dp"
+                tools:text="5.6"
+                android:textSize="10dp"
+                android:textColor="@android:color/background_dark"
+                android:id="@+id/sem_sgpi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                android:layout_marginRight="8dp"
+                android:gravity="right"
+                android:textSize="10dp"
+                android:layout_gravity="right"
+                android:textColor="@android:color/background_dark"
+                android:id="@+id/sem_year_rank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:layout_marginLeft="8dp"
+            tools:text="5.6"
+            android:gravity="left"
+            android:textSize="10dp"
+            android:layout_gravity="left"
+            android:textColor="@android:color/background_dark"
+            android:id="@+id/sem_cgpi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    <TextView
+            android:gravity="right"
+            android:textSize="10dp"
+            android:layout_marginRight="8dp"
+            android:textColor="@android:color/background_dark"
+            android:id="@+id/sem_college_rank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>
