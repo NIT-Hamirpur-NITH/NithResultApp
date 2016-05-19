@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ResultApp</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="prompt1">Select Year</string>
+    <string name="prompt2">Select Branch</string>
+    <string-array name="year">
+        <item>First Year</item>
+        <item>Second Year</item>
+        <item>Third Year</item>
+        <item>Final Year</item>
+    </string-array>
+    <string-array name="branch">
+        <item>Civil</item>
+        <item>Electrical</item>
+        <item>Mechanical</item>
+        <item>Electronics</item>
+        <item>Computer Science</item>
+        <item>Architecture</item>
+        <item>Chemical</item>
+    </string-array>
+    <string-array name="order">
+        <item>Rank</item>
+        <item>Roll No</item>
+    </string-array>
+</resources>
