@@ -37,15 +37,19 @@ public class Tab1 extends Fragment{
     {
 
         String s_roll = roll.getText().toString();
-
-        if(s_roll.length()==0){
-            Toast.makeText(getActivity(), "Roll No empty", Toast.LENGTH_SHORT).show();
-        } else{
-            Intent i = new Intent(getActivity(), Semwise_result.class);
-            i.putExtra("roll", s_roll);
-            i.putExtra("roll", s_roll);
-            startActivity(i);
+        if(!s_roll.isEmpty()){
+            if(Utility.checkRollno(s_roll)){
+                Intent i = new Intent(getActivity(), Semwise_result.class);
+                i.putExtra("roll", s_roll);
+                i.putExtra("roll", s_roll);
+                startActivity(i);
+            }
+            else {
+                Toast.makeText(getActivity(), "Invalid Roll Number", Toast.LENGTH_SHORT).show();
+            }
         }
-
+        else {
+            Toast.makeText(getActivity(), "Roll No empty", Toast.LENGTH_SHORT).show();
+        }
     }
 }
