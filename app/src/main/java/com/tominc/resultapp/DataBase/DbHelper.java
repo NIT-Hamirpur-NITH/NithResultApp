@@ -16,7 +16,7 @@ import static com.tominc.resultapp.DataBase.DbContract.VERSION;
  * Created by lenovo on 8/6/2016.
  */
 public class DbHelper extends SQLiteOpenHelper {
-    private final String CREATE_TABLE = "Create Table " + TABLE_NAME + "( " + _ID + " integer auto_increment primary key ," + TITLE + " text not null , " + PARAMETER + " text not null , " + TARGET_ACTIVITY + " text not null , " + SEARCHED_ON + " timestamp default current_timestamp);";
+    private final String CREATE_TABLE = "Create Table " + TABLE_NAME + "( " + _ID + " integer auto_increment primary key ," + TITLE + " text not null , " + PARAMETER + " text not null , " + TARGET_ACTIVITY + " text , " + SEARCHED_ON + " timestamp default current_timestamp);";
 
     public DbHelper(Context context) {
         super(context, DbContract.DATABASE_NAME, null, VERSION);

@@ -17,8 +17,8 @@ import android.util.Log;
 public class DBProvider extends ContentProvider {
     private SQLiteDatabase sqLiteDatabase;
     private DbHelper dbHelper;
-    private final int INSERT = 1;
-    private final int READ = 2;
+    private static final int INSERT = 1;
+    private static final int READ = 2;
     private static UriMatcher uriMatcher = uriMatcher();
 
     private static UriMatcher uriMatcher() {
@@ -69,6 +69,7 @@ public class DBProvider extends ContentProvider {
                 getContext().getContentResolver().notifyChange(_uri, null);
                 return _uri;
             }
+            sqLiteDatabase.close();
         }
         return null;
     }

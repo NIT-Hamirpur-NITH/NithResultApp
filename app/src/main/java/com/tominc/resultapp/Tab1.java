@@ -1,5 +1,6 @@
 package com.tominc.resultapp;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.tominc.resultapp.DataBase.DbContract;
 
 /**
  * Created by shubham on 23/8/15.
@@ -38,6 +41,11 @@ public class Tab1 extends Fragment{
     {
         if(!s_roll.isEmpty()){
             if(Utility.checkRollno(s_roll)){
+                ContentValues v=new ContentValues();
+                v.put(DbContract.SEARCH_TABLE.TITLE,"Searched "+s_roll);
+                v.put(DbContract.SEARCH_TABLE.PARAMETER,s_roll);
+                v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY,"Semwise_result");
+                getActivity().getContentResolver().insert(DbContract.insertHistory(),v);
                 Intent i = new Intent(getActivity(), Semwise_result.class);
                 i.putExtra("roll", s_roll);
                 startActivity(i);
@@ -50,4 +58,6 @@ public class Tab1 extends Fragment{
             Toast.makeText(getActivity(), "Roll No empty", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }
