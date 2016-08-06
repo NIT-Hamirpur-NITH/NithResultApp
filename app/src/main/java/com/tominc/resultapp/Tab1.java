@@ -27,20 +27,18 @@ public class Tab1 extends Fragment{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                next(v);
+                next(roll.getText().toString());
             }
         });
         return root;
     }
 
-    public void next(View v)
+    // What is the need of the View v Parameter??
+    public void next(String s_roll)
     {
-
-        String s_roll = roll.getText().toString();
         if(!s_roll.isEmpty()){
             if(Utility.checkRollno(s_roll)){
                 Intent i = new Intent(getActivity(), Semwise_result.class);
-                i.putExtra("roll", s_roll);
                 i.putExtra("roll", s_roll);
                 startActivity(i);
             }
