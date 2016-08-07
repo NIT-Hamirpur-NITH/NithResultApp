@@ -47,9 +47,6 @@ public class Tab2 extends Fragment {
                 int year = spinner.getSelectedItemPosition() + 1;
                 int branch = spinner2.getSelectedItemPosition() + 1;
                 int order = spinner3.getSelectedItemPosition();
-                String data_year=adapter.getItem(spinner.getSelectedItemPosition()+1).toString();
-                String data_branch=adapter2.getItem(spinner2.getSelectedItemPosition()+1).toString();
-
                 String fin_order;
                 if(order==0){
                     fin_order = "rank";
@@ -57,8 +54,8 @@ public class Tab2 extends Fragment {
                     fin_order = "roll";
                 }
                 ContentValues v=new ContentValues();
-                v.put(DbContract.SEARCH_TABLE.TITLE,"Searched result of "+data_year+" "+data_branch+" in order of "+fin_order);
-                v.put(DbContract.SEARCH_TABLE.PARAMETER,data_year+" "+data_branch+" "+fin_order);
+                v.put(DbContract.SEARCH_TABLE.TITLE,"Searched result of "+getData(R.array.year,year)+" "+getData(R.array.branch,branch)+" in order of "+fin_order);
+                v.put(DbContract.SEARCH_TABLE.PARAMETER,year+" "+branch+" "+fin_order);
                 v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY,"ShowClassResult");
                 getActivity().getContentResolver().insert(DbContract.insertHistory(),v);
                 Intent in = new Intent(getActivity(), ShowClassResult.class);
@@ -73,5 +70,9 @@ public class Tab2 extends Fragment {
 
 
         return view;
+    }
+
+    private String getData(int array_id,int id){
+        return getResources().getStringArray(array_id)[id];
     }
 }

@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SearchActivity extends AppCompatActivity {
+    public static final String SEARCH_KEYWORD = "key";
     Toolbar toolbar;
     private final String GET_URL = Config.BASEURL + "4.php";
     ListView list;
@@ -64,9 +65,9 @@ public class SearchActivity extends AppCompatActivity {
                 if (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) || (i == EditorInfo.IME_ACTION_DONE)) {
                 String q=seach.getText().toString();
                     ContentValues v=new ContentValues();
-                    v.put(DbContract.SEARCH_TABLE.TITLE,"Searched Result of "+q);
+                    v.put(DbContract.SEARCH_TABLE.TITLE,"Searched Keyword "+q);
                     v.put(DbContract.SEARCH_TABLE.PARAMETER,q);
-                    v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY,"");
+                    v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY,"SearchActivity");
                     getContentResolver().insert(DbContract.insertHistory(),v);
                     requestSearch(q);
                 }
@@ -91,6 +92,12 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent i=getIntent();
+        if(i!=null){
+            if(i.hasExtra(SEARCH_KEYWORD))
+            requestSearch(i.getStringExtra(SEARCH_KEYWORD));
+        }
 
 
     }

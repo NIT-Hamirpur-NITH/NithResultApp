@@ -40,7 +40,7 @@ public class DBProvider extends ContentProvider {
        sqLiteDatabase=dbHelper.getReadableDatabase();
         Cursor cursor=null;
         if(uriMatcher.match(uri)==READ){
-            cursor=sqLiteDatabase.query(DbContract.TABLE_NAME,null,null,null,null,null,null);
+            cursor=sqLiteDatabase.query(DbContract.TABLE_NAME,null,null,null,null,null,DbContract.SEARCH_TABLE.SEARCHED_ON+" desc");
             if(cursor!=null){
                 cursor.setNotificationUri(getContext().getContentResolver(),uri);
                 return  cursor;
@@ -67,9 +67,10 @@ public class DBProvider extends ContentProvider {
                 Log.d("insert","insert");
                 Uri _uri = ContentUris.withAppendedId(uri, id);
                 getContext().getContentResolver().notifyChange(_uri, null);
+                sqLiteDatabase.close();
                 return _uri;
             }
-            sqLiteDatabase.close();
+
         }
         return null;
     }

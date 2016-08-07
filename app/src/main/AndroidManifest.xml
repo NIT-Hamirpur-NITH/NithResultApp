@@ -50,7 +50,9 @@
             android:name=".DataBase.DBProvider"
             android:authorities="com.tominc.resultapp" />
 
-        <activity android:name=".HistoryActivity"></activity>
+        <activity android:name=".HistoryActivity"
+            android:label="History"
+            android:parentActivityName=".MainActivity" ></activity>
     </application>
 
 </manifest>
