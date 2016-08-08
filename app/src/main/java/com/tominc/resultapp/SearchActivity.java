@@ -1,10 +1,10 @@
 package com.tominc.resultapp;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.tominc.resultapp.DataBase.DbContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SearchActivity extends AppCompatActivity {
+    public static final String SEARCH_KEYWORD = "key";
     Toolbar toolbar;
     private final String GET_URL = Config.BASEURL + "4.php";
     ListView list;
@@ -61,7 +63,13 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) || (i == EditorInfo.IME_ACTION_DONE)) {
-                    requestSearch(seach.getText().toString());
+                String q=seach.getText().toString();
+                    ContentValues v=new ContentValues();
+                    v.put(DbContract.SEARCH_TABLE.TITLE,"Searched Keyword "+q);
+                    v.put(DbContract.SEARCH_TABLE.PARAMETER,q);
+                    v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY,"SearchActivity");
+                    getContentResolver().insert(DbContract.insertHistory(),v);
+                    requestSearch(q);
                 }
                 return false;
             }
@@ -70,13 +78,26 @@ public class SearchActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String s=rollno.get(i);
+                ContentValues v=new ContentValues();
+                v.put(DbContract.SEARCH_TABLE.TITLE,"Searched "+s);
+                v.put(DbContract.SEARCH_TABLE.PARAMETER,s);
+                v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY,"Semwise_result");
+                getContentResolver().insert(DbContract.insertHistory(),v);
+                Log.d("d",s);
                 Intent in = new Intent(SearchActivity.this, Semwise_result.class);
-                in.putExtra("roll", rollno.get(i));
+                in.putExtra("roll",s );
                 startActivity(in);
             }
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent i=getIntent();
+        if(i!=null){
+            if(i.hasExtra(SEARCH_KEYWORD))
+            requestSearch(i.getStringExtra(SEARCH_KEYWORD));
+        }
 
 
     }

@@ -12,9 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".SearchActivity"
             android:label="ResultApp"
@@ -38,14 +36,23 @@
         <activity
             android:name=".GraphActivity"
             android:label="Graph" />
-        <activity android:name=".SplashActivity"
-            android:theme="@style/CustomTheme" >
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/CustomTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".DataBase.DBProvider"
+            android:authorities="com.tominc.resultapp" />
+
+        <activity android:name=".HistoryActivity"
+            android:label="History"
+            android:parentActivityName=".MainActivity" ></activity>
     </application>
 
 </manifest>

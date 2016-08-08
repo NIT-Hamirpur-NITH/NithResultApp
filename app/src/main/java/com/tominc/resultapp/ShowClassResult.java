@@ -2,14 +2,13 @@ package com.tominc.resultapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,6 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShowClassResult extends AppCompatActivity {
+    ProgressDialog dialog;
+    SemAdapter adapter;
     ListView list;
     ArrayList<String> rollno = new ArrayList<>();
     ArrayList<String> names = new ArrayList<>();
@@ -54,10 +55,10 @@ public class ShowClassResult extends AppCompatActivity {
 
         Log.e("ShowClassResult", order);
 
-        list= (ListView) findViewById(R.id.class_result);
+        list = (ListView) findViewById(R.id.class_result);
 
 
-        final SemAdapter adapter=  new SemAdapter(rollno, names, cgpis,year_rank,college_rank, getApplicationContext(), 3);
+        adapter = new SemAdapter(rollno, names, cgpis, year_rank, college_rank, getApplicationContext(), 3);
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -69,11 +70,16 @@ public class ShowClassResult extends AppCompatActivity {
             }
         });
 
-        final ProgressDialog dialog = new ProgressDialog(ShowClassResult.this);
+        dialog = new ProgressDialog(ShowClassResult.this);
         dialog.setMessage("Please Wait...");
         dialog.setCancelable(false);
         dialog.show();
 
+        getClassResult(year, branch, order);
+    }
+
+
+    public void getClassResult(final String year, final String branch, final String order) {
         RequestQueue rq = Volley.newRequestQueue(getApplicationContext());
         StringRequest request = new StringRequest(Request.Method.POST, GET_URL, new Response.Listener<String>() {
             @Override
@@ -82,7 +88,7 @@ public class ShowClassResult extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(s);
                     JSONArray ar = jsonObject.getJSONArray("result");
 
-                    for(int i=0;i<ar.length();i++){
+                    for (int i = 0; i < ar.length(); i++) {
                         JSONObject ob = ar.getJSONObject(i);
                         rollno.add(ob.getString("rollno"));
                         names.add(ob.getString("name"));
@@ -105,7 +111,7 @@ public class ShowClassResult extends AppCompatActivity {
                 dialog.dismiss();
                 Toast.makeText(getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
@@ -117,7 +123,6 @@ public class ShowClassResult extends AppCompatActivity {
         };
 
         rq.add(request);
-
     }
 
     @Override
