@@ -1,6 +1,9 @@
 package com.tominc.resultapp;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +16,8 @@ import com.tominc.resultapp.DataBase.DbContract;
 
 import java.util.ArrayList;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int LOADER_HISTORY =1 ;
     private RecyclerView recyclerView;
     private HistoryAdapter historyAdapter;
     private ArrayList<HistoryModel> list=new ArrayList<>();
@@ -34,7 +38,7 @@ public class HistoryActivity extends AppCompatActivity {
                 openActivity(list.get(position).getParameter().trim(),list.get(position).getTarget());
             }
         }));
-        getData(getContentResolver().query(DbContract.readHistory(), null, null, null, null));
+        getLoaderManager().initLoader(LOADER_HISTORY,null,this);
 
 
     }
@@ -92,5 +96,20 @@ public class HistoryActivity extends AppCompatActivity {
             Log.d("s",s);
         list.add(s);}
         return list;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CursorLoader(this, DbContract.readHistory(),null,null,null,null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+         getData(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

@@ -30,6 +30,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.viewHold
      if(!list.get(position).getTitle().isEmpty()){
          holder.textView.setText(list.get(position).getTitle());
      }
+        if(!list.get(position).getCreated_on().isEmpty()){
+            holder.timeview.setText(Utility.getTimestamp(list.get(position).getCreated_on()+" GMT"));
+        }
     }
 
     @Override
@@ -38,11 +41,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.viewHold
     }
 
     public static class viewHolder extends RecyclerView.ViewHolder {
-        private TextView textView;
+        private TextView textView,timeview;
 
         public viewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.text_item_history);
+            timeview = (TextView) itemView.findViewById(R.id.text_time_history);
         }
     }
 }
