@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#011A27</color>
     <color name="colorAccent">#F0810F</color>
     <color name="selector">#ffffff</color>
+    <color name="dialog_background">#7f000000</color>
+    <color name="divider">#1f000000</color>
+    <color name="card">#fff</color>
 </resources>
