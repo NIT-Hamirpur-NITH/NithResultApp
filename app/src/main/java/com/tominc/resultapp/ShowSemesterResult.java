@@ -85,8 +85,8 @@ public class ShowSemesterResult extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("Roll", roll);
-                params.put("Semester", roll+semester);
+                params.put("roll", roll);
+                params.put("semester", roll+semester);
                 return params;
             }
         };

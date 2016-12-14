@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * Created by lenovo on 8/6/2016.
+ */
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.viewHolder> {
     private ArrayList<HistoryModel> list = new ArrayList<>();
 
@@ -18,7 +21,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.viewHold
 
     @Override
     public viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history,parent,false);
+        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_history,parent,false);
         return new viewHolder(v);
     }
 
