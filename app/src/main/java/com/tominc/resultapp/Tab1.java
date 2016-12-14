@@ -47,7 +47,7 @@ public class Tab1 extends Fragment{
                 v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY,"Semwise_result");
                 getActivity().getContentResolver().insert(DbContract.insertHistory(),v);
                 Intent i = new Intent(getActivity(), Semwise_result.class);
-                i.putExtra("roll", s_roll);
+                i.putExtra("Roll", s_roll);
                 startActivity(i);
             }
             else {
@@ -55,7 +55,7 @@ public class Tab1 extends Fragment{
             }
         }
         else {
-            Toast.makeText(getActivity(), "Roll No empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Roll No field is empty", Toast.LENGTH_SHORT).show();
         }
     }
 

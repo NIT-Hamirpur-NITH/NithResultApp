@@ -49,7 +49,7 @@ public class GraphActivity extends AppCompatActivity {
         for(int i=0;i<sgpi.size();i++){
             DataPoint temp = new DataPoint(i+1, Double.valueOf(sgpi.get(i)));
             ar[i] = temp;
-            total+=Double.valueOf(sgpi.get(i));
+            total+ = Double.valueOf(sgpi.get(i));
         }
 
         double avg = total/sgpi.size();
@@ -57,7 +57,7 @@ public class GraphActivity extends AppCompatActivity {
         DataPoint[] ar2 = new DataPoint[sgpi.size()];
         for(int i=0;i<ar2.length;i++){
             DataPoint temp = new DataPoint(i+1, avg);
-            ar2[i]=temp;
+            ar2[i] = temp;
         }
 
 
@@ -82,7 +82,5 @@ public class GraphActivity extends AppCompatActivity {
             graphView.addSeries(series2);
             graphView.setTitle("Average:"+new DecimalFormat("##.##").format(avg));
         }
-
-
     }
 }

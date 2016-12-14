@@ -33,14 +33,14 @@ public class Utility {
         long minute=time/60l;
         long hour=minute/60l;
         long day=hour/24l;
-        if(time<60l)
+        if (time<60l)
             return time+" seconds ago";
         else if (minute<60l)
             return minute+" minute ago";
-        else if(hour<24l)
+        else if (hour<24l)
             return hour+" hour ago";
         else
-            return day+"day ago";
+            return day+" day ago";
     }
 
 }
