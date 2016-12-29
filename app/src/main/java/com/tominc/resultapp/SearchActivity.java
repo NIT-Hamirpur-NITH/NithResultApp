@@ -6,9 +6,11 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -41,6 +43,7 @@ import java.util.Map;
 
 public class SearchActivity extends AppCompatActivity {
     public static final String SEARCH_KEYWORD = "key";
+    private static final int SUGGESTION_ID = 12;
     Toolbar toolbar;
     private final String GET_URL = Config.BASEURL + "4.php";
     ListView list;
@@ -51,6 +54,8 @@ public class SearchActivity extends AppCompatActivity {
     ArrayList<String> college_rank = new ArrayList<>();
     SemAdapter adapter;
     private android.support.v7.widget.SearchView searchView;
+    private SimpleCursorAdapter suggestionAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +64,7 @@ public class SearchActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
 
-        searchView= (android.support.v7.widget.SearchView) toolbar.findViewById(R.id.search_view);
+        searchView = (android.support.v7.widget.SearchView) toolbar.findViewById(R.id.search_view);
         list = (ListView) findViewById(R.id.search_list);
 
         searchView.setIconified(false);
@@ -67,66 +72,69 @@ public class SearchActivity extends AppCompatActivity {
         android.support.v7.widget.SearchView.SearchAutoComplete searchAutoComplete = (android.support.v7.widget.SearchView.SearchAutoComplete) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchAutoComplete.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-        adapter = new SemAdapter(names, rollno, cgpis,year_rank,college_rank, getApplicationContext(), 4);
+        adapter = new SemAdapter(names, rollno, cgpis, year_rank, college_rank, getApplicationContext(), 4);
         list.setAdapter(adapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String q) {
-                ContentValues v=new ContentValues();
-                v.put(DbContract.SEARCH_TABLE.TITLE,"Searched Keyword "+q);
-                v.put(DbContract.SEARCH_TABLE.PARAMETER,q);
-                v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY,"SearchActivity");
-                getContentResolver().insert(DbContract.insertHistory(),v);
+                ContentValues v = new ContentValues();
+                v.put(DbContract.SEARCH_TABLE.TITLE, "Searched Keyword " + q);
+                v.put(DbContract.SEARCH_TABLE.PARAMETER, q);
+                v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY, "SearchActivity");
+                getContentResolver().insert(DbContract.insertHistory(), v);
                 requestSearch(q);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                getSuggestion(newText);
                 return false;
             }
         });
 
-searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-    @Override
-    public boolean onClose() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            doExitAnim();
-        }
-        return false;
-    }
-});
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    doExitAnim();
+                }
+                return false;
+            }
+        });
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String s=rollno.get(i);
-                ContentValues v=new ContentValues();
-                v.put(DbContract.SEARCH_TABLE.TITLE,"Searched "+s);
-                v.put(DbContract.SEARCH_TABLE.PARAMETER,s);
-                v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY,"Semwise_result");
-                getContentResolver().insert(DbContract.insertHistory(),v);
-                Log.d("d",s);
+                String s = rollno.get(i);
+                ContentValues v = new ContentValues();
+                v.put(DbContract.SEARCH_TABLE.TITLE, "Searched " + s);
+                v.put(DbContract.SEARCH_TABLE.PARAMETER, s);
+                v.put(DbContract.SEARCH_TABLE.TARGET_ACTIVITY, "Semwise_result");
+                getContentResolver().insert(DbContract.insertHistory(), v);
+                Log.d("d", s);
                 Intent in = new Intent(SearchActivity.this, Semwise_result.class);
-                in.putExtra("roll",s );
+                in.putExtra("roll", s);
                 startActivity(in);
             }
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent i=getIntent();
-        if(i!=null){
-            if(i.hasExtra(SEARCH_KEYWORD))
-            requestSearch(i.getStringExtra(SEARCH_KEYWORD));
+        Intent i = getIntent();
+        if (i != null) {
+            if (i.hasExtra(SEARCH_KEYWORD))
+                requestSearch(i.getStringExtra(SEARCH_KEYWORD));
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             doEnterAnim();
         }
 
+        suggestionAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null,new String[]{DbContract.SEARCH_TABLE.PARAMETER},new int[]{android.R.id.text1});
+        searchView.setSuggestionsAdapter(suggestionAdapter);
     }
 
-    private void requestSearch(final String search){
+    private void requestSearch(final String search) {
         final ProgressDialog dialog = new ProgressDialog(SearchActivity.this);
         dialog.setMessage("Please Wait...");
         dialog.setCancelable(false);
@@ -146,7 +154,7 @@ searchView.setOnCloseListener(new SearchView.OnCloseListener() {
                     JSONObject jsonObject = new JSONObject(s);
                     JSONArray ar = jsonObject.getJSONArray("result");
 
-                    for(int i=0;i<ar.length();i++){
+                    for (int i = 0; i < ar.length(); i++) {
                         JSONObject ob = ar.getJSONObject(i);
                         names.add(ob.getString("Name"));
                         cgpis.add(ob.getString("CGPI"));
@@ -168,7 +176,7 @@ searchView.setOnCloseListener(new SearchView.OnCloseListener() {
                 dialog.dismiss();
                 Toast.makeText(getApplicationContext(), "No connection", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
@@ -179,6 +187,7 @@ searchView.setOnCloseListener(new SearchView.OnCloseListener() {
 
         rq.add(request);
     }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void doEnterAnim() {
         // Fade in a background scrim as this is a floating window. We could have used a
@@ -261,6 +270,14 @@ searchView.setOnCloseListener(new SearchView.OnCloseListener() {
         super.onBackPressed();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             doExitAnim();
+        }
+    }
+
+    private void getSuggestion(String s) {
+        Cursor c = getContentResolver().query(DbContract.getSuggestion(),null, DbContract.SEARCH_TABLE.TITLE + " like "+"\"%"+s+"%\"",null, null);
+        if (c != null) {
+            if(c.moveToFirst())
+            suggestionAdapter.changeCursor(c);
         }
     }
 }

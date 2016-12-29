@@ -19,12 +19,14 @@ public class DBProvider extends ContentProvider {
     private DbHelper dbHelper;
     private static final int INSERT = 1;
     private static final int READ = 2;
+    private static final int SUGGESTION=3;
     private static UriMatcher uriMatcher = uriMatcher();
 
     private static UriMatcher uriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(DbContract.AUTHORITY, DbContract.INSERT, INSERT);
         uriMatcher.addURI(DbContract.AUTHORITY, DbContract.READ, READ);
+        uriMatcher.addURI(DbContract.AUTHORITY,DbContract.SUGGESTION,SUGGESTION);
         return uriMatcher;
     }
 
@@ -46,7 +48,13 @@ public class DBProvider extends ContentProvider {
                 return  cursor;
             }
         }
-
+        else if(uriMatcher.match(uri)==SUGGESTION) {
+            cursor = sqLiteDatabase.query(DbContract.TABLE_NAME,null,s,null,null,null,null);
+            if (cursor != null) {
+                cursor.setNotificationUri(getContext().getContentResolver(), uri);
+                return cursor;
+            }
+        }
         return null;
     }
 

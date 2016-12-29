@@ -15,6 +15,7 @@ public class DbContract {
     public static final int VERSION=1;
     public static final String INSERT="insert";
     public static final String READ="read";
+    public static final String SUGGESTION="suggestion";
 
     public static class SEARCH_TABLE implements BaseColumns{
         public static final String TARGET_ACTIVITY="targetActivity";
@@ -24,6 +25,7 @@ public class DbContract {
 
     }
 
+    public static Uri getSuggestion(){return BASE_URI.buildUpon().appendPath(SUGGESTION).build();}
     public static Uri insertHistory(){
         return BASE_URI.buildUpon().appendPath(INSERT).build();
     }
